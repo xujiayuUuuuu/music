@@ -471,11 +471,8 @@ padding-left: 10px;
   }
   .search-list{
     font-size: 1.5rem;
-    display: column;
-    flex-direction: column;
     text-align: center;
     gap: 100px;
-   
     margin-top: 10px;
     margin-bottom: 10px;
     margin: 100px;
@@ -486,7 +483,6 @@ padding-left: 10px;
 
   .search-text p{
     color: rgb(255, 255, 255);
-  margin: 50px;
   padding: 20px;
   width: 600px;
   margin-left: 180px;
