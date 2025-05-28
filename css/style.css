@@ -470,28 +470,33 @@ padding-left: 10px;
     margin-bottom: 100px;
   }
   .search-list{
-    font-size: 1rem;
-    display: flex;
-    flex-direction: row;
+    font-size: 1.5rem;
+    display: column;
+    flex-direction: column;
     text-align: center;
-    gap: 40px;
+    gap: 100px;
+   
     margin-top: 10px;
     margin-bottom: 10px;
+    margin: 100px;
+ 
 }
   
   
 
   .search-text p{
     color: rgb(255, 255, 255);
-  margin: 10px;
+  margin: 50px;
   padding: 20px;
-  width: 300px;
+  width: 600px;
+  margin-left: 180px;
     height: 40px;
-    margin-top: 30px;
     border-radius: 8px;
-    display: flex;
+    display: column;
+    flex-direction: column;
     text-align: center;
     box-shadow: 0 4px 12px rgba(79, 79, 79, 0.25);
+   
   }
 
   .search-text p:hover{
@@ -506,7 +511,7 @@ padding-left: 10px;
     gap: 10px;
     text-align: right;
     position: right;
-    margin-left: 300px;
+    margin-left: 0px;
     margin-top: 10px;
       }
       .index-list button{
@@ -538,7 +543,7 @@ padding-left: 10px;
       display: column;
       flex-direction: column;
       text-align: center;
-      gap: 40px;
+   
       margin: 0px;
      
   }
@@ -597,4 +602,79 @@ padding-left: 10px;
     margin: 0 auto;
 }
 
+
+.info3 img {
+
+  width: 250px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  display: flex;
+  margin: 0 auto;
+ 
+}
+
+.info3 {
+  margin: 0 auto;
+ flex-direction: column;
+ 
+}
+.info3 h1{
+  font-size: 1.5rem;
+ 
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+
+.info3 p{
+  font-size: 1rem;
+  flex-direction: column;
+  margin: 0 auto;
+}
+.info3 a{
+font-size: 1.5rem;
+flex-direction: column; 
+margin: 0 auto;
+color: #fff;
+}
+.info3 a:hover{
+font-size: 1.8rem;
+}
+
+.info4 img {
+  width: 250px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  display: flex;
+  margin: 0 auto;
+}
+.info4 {
+ flex-direction: column;
+ margin: 0 auto;
+}
+.info4 h1{
+  font-size: 1.5rem;
+  flex-direction: column;
+  margin: 0 auto;
+  
+}
+
+
+.info4 p{
+  font-size: 1rem;
+  flex-direction: column;
+  margin: 0 auto;
+ 
+ 
+}
+.info4 a{
+font-size: 1.5rem;
+flex-direction: column; 
+margin: 0 auto;
+color: #fff;
+}
+
+#particles-js {
+display: none;
+}
 }
