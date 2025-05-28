@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Player</title>
+  <link rel="stylesheet" href="css/style2.css" />
+</head>
+<body>  
+  <div class="wave-container">
+    <div class="wave wave"></div>
+    <div class="wave wave1"></div>
+    <div class="wave-mask"></div>
+  </div>
+  
+  <header>
+  <nav class="index-list">
+    <a href="index.html"><button>首頁</button></a>
+        <a href="music03.html"><button>音樂</button></a>
+       <button>聯絡我們</button>
+  </nav>
+</header>
+  
+  <div class="container">
+    <header>
+      <h1>Music</h1>
+      <nav>
+        <a href="#">如果聲音記得</a>
+      </nav>
+    </header>
+
+    
+        <div class="player">
+          <div class="disc-container">
+            <img src="如果聲音記得/photo2.png" alt="Album Cover" class="disc" id="cover">
+          </div>
+          <audio id="audio" src="如果聲音記得/羈絆1.mp3">
+          </audio>
+          
+          <div class="info">
+      <h2>羈絆</h2>
+      <p>2025 • 3 tracks • 46 min</p>
+      <blockquote>
+        “羈絆
+        陪伴 歡笑 友情 親情
+        不同交織的情感“
+      </blockquote>
+  
+       
+          <div class="controls">
+            <button onclick="prevSong()"> <img src="play-button/未命名-3_left.png" alt="Album Cover" >
+            </button>
+            <button onclick="togglePlay()"><img src="play-button/未命名-3_play.png" alt="Album Cover" >
+            </button>
+            <button onclick="nextSong()"><img src="play-button/未命名-3_right.png" alt="Album Cover" >
+            </button>
+          </div>
+        </div>
+     
+          <input type="range" id="progress" value="0" step="1" min="0" max="100" onchange="setProgress(this.value)">
+        </div>
+    
+        
+        
+    
+ 
+
+    <h2>歌曲介紹 ></h2>
+        <header></header>
+
+<div class="play-text">
+<p>羈絆</p>
+  <p>陪伴 歡笑 友情 親情不同交織的情感</p>
+  <p>交雜 錯綜 組成所有羈絆</p>
+  
+  <p>這一次我想記住所有</p>
+  
+  <p>是那個下午 熟悉的聲音 清澈且單純的我們</p> 
+  <p>用一個真心去交流
+  是玩笑 嬉鬧 那些美好的瞬間 依稀模糊</p>
+  <p>聲音 都記得</p>
+  
+  <p>bond</p>
+  <p> Companionship, laughter, friendship, and family are intertwined emotions
+  </p>  <p>Mixed and intricate, forming all the bonds</p>
+  
+  <p>This time I want to remember all</p>
+  
+  <p>It was that afternoon, the familiar voice, the clear and pure us</p>
+  <p>Communicate with a sincere heart</p>
+  <p>It was a joke, a frolic, those beautiful moments are vaguely blurred</p>
+  
+  <p>Sound</p>
+  <p>Remember all</p>
+
+  <footer>
+    <p>© 2025 Music App</p>
+    <p>聯絡我們</p>
+    <p> music20032025@gmail.com</p>
+    <p> 02-2252-2672</p>
+  </footer>
+  
+</div>
+</div>
+
+ 
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <script>
+  const audio = document.getElementById("audio");
+const cover = document.getElementById("cover");
+const progress = document.getElementById("progress");
+
+const songs = [
+  { name: "music1.mp3", cover: "cover1.jpg" },
+  { name: "music2.mp3", cover: "cover2.jpg" },
+  { name: "music3.mp3", cover: "cover3.jpg" }
+];
+
+let currentSong = 0;
+
+function loadSong(index) {
+  audio.src = songs[index].name;
+  cover.src = songs[index].cover;
+  audio.load();
+  togglePlay(true);
+}
+
+function togglePlay(forcePlay = false) {
+  if (audio.paused || forcePlay) {
+    audio.play();
+    cover.classList.add("playing");
+  } else {
+    audio.pause();
+    cover.classList.remove("playing");
+  }
+}
+
+function nextSong() {
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong);
+}
+
+function prevSong() {
+  currentSong = (currentSong - 1 + songs.length) % songs.length;
+  loadSong(currentSong);
+}
+
+audio.ontimeupdate = () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progress.value = percent || 0;
+};
+
+function setProgress(val) {
+  audio.currentTime = (val / 100) * audio.duration;
+}
+  </script>
+</body>
+</html>

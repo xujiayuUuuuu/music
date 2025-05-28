@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Player</title>
+  <link rel="stylesheet" href="css/style03.css" />
+  </head>
+<body>  
+
+
+<style>
+  canvas#grain-canvas,
+  canvas#rain-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1200px;
+    height: 3000px;
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  #grain-canvas {
+    opacity: 0.1;
+    filter: contrast(200%) brightness(1.2);
+  }
+
+  #rain-canvas {
+    opacity: 0.3;
+    filter: blur(1px);
+  }
+</style>
+
+  <header>
+  <nav class="index-list">
+    <a href="index.html"><button>首頁</button></a>
+        <a href="music2.html"><button>音樂</button></a>
+       <button>聯絡我們</button>
+  </nav>
+</header>
+  
+  <div class="container">
+    <header>
+      
+      <h1>Music</h1>
+      <nav>
+        <a href="#">如果聲音記得</a>
+      </nav>
+    </header>
+
+    
+        <div class="player">
+          <div class="disc-container">
+            <img src="如果聲音記得/獨.png" alt="Album Cover" class="disc" id="cover">
+          </div>
+          <audio id="audio" src="play-button/獨 - 2025_3_15 上午1.08.m4a"></audio>
+        
+          <div class="info">
+      <h2>獨</h2>
+      <p>2025 • 3 tracks • 50 min</p>
+      <blockquote>
+        “21年
+          獨自一人時
+          空
+          無一物
+          海聲 雨聲 呼吸
+          剩下我與世界的獨白“
+      </blockquote>
+  
+       
+          <div class="controls">
+            <button onclick="prevSong()"> <img src="play-button/未命名-3_left.png" alt="Album Cover" >
+            </button>
+            <button onclick="togglePlay()"><img src="play-button/未命名-3_play.png" alt="Album Cover" >
+            </button>
+            <button onclick="nextSong()"><img src="play-button/未命名-3_right.png" alt="Album Cover" >
+            </button>
+          </div>
+        </div>
+     
+          <input type="range" id="progress" value="0" step="1" min="0" max="100" onchange="setProgress(this.value)">
+        </div>
+
+    
+        
+        
+    
+ 
+
+    <h2>歌曲介紹 ></h2>
+        <header></header>
+
+<div class="play-text">
+
+  <div class="play-text">
+    <p>21年
+      獨自一人時</p>
+      <p>空
+      無一物
+      海聲 雨聲 呼吸
+      剩下我與世界的獨白</p>
+      <p><span>聲音</span>
+      記得我的所有</p>
+      
+      <p>21 years
+      when alone
+      null</p>
+      <p>Nothing
+      Sound of the sea, rain, breathing</p>
+      <p>Only the monologue between me 
+      and the world remains</p>
+      <p>sound
+      remember everything about me</p>
+      
+    </div>
+  <footer>
+    <p>© 2025 Music App</p>
+    <p>聯絡我們</p>
+    <p> music20032025@gmail.com</p>
+    <p> 02-2252-2672</p>
+  </footer>
+   <!-- 粗粒磨砂效果 -->
+<canvas id="grain-canvas"></canvas>
+
+<!-- 下雨動畫效果 -->
+<canvas id="rain-canvas"></canvas>
+</div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<script>
+const audio = document.getElementById("audio");
+const cover = document.getElementById("cover");
+const progress = document.getElementById("progress");
+
+const songs = [
+{ name: "music1.mp3", cover: "cover1.jpg" },
+{ name: "music2.mp3", cover: "cover2.jpg" },
+{ name: "music3.mp3", cover: "cover3.jpg" }
+];
+
+let currentSong = 0;
+
+function loadSong(index) {
+audio.src = songs[index].name;
+cover.src = songs[index].cover;
+audio.load();
+togglePlay(true);
+}
+
+function togglePlay(forcePlay = false) {
+if (audio.paused || forcePlay) {
+  audio.play();
+  cover.classList.add("playing");
+} else {
+  audio.pause();
+  cover.classList.remove("playing");
+}
+}
+
+function nextSong() {
+currentSong = (currentSong + 1) % songs.length;
+loadSong(currentSong);
+}
+
+function prevSong() {
+currentSong = (currentSong - 1 + songs.length) % songs.length;
+loadSong(currentSong);
+}
+
+audio.ontimeupdate = () => {
+const percent = (audio.currentTime / audio.duration) * 100;
+progress.value = percent || 0;
+};
+
+function setProgress(val) {
+audio.currentTime = (val / 100) * audio.duration;
+}
+</script>
+<script>
+  // ========== Grain Canvas ==========
+  const grainCanvas = document.getElementById("grain-canvas");
+  const grainCtx = grainCanvas.getContext("2d");
+
+  function resizeGrain() {
+    grainCanvas.width = window.innerWidth;
+    grainCanvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resizeGrain);
+  resizeGrain();
+
+  function generateGrain() {
+    const imageData = grainCtx.createImageData(grainCanvas.width, grainCanvas.height);
+    const buffer32 = new Uint32Array(imageData.data.buffer);
+    const len = buffer32.length;
+
+    for (let i = 0; i < len; i++) {
+      if (Math.random() < 0.05) {
+        buffer32[i] = 0xffffffff; // white pixel
+      }
+    }
+
+    grainCtx.putImageData(imageData, 0, 0);
+  }
+
+  function animateGrain() {
+    generateGrain();
+    requestAnimationFrame(animateGrain);
+  }
+
+  animateGrain();
+
+  // ========== Rain Canvas ==========
+  const rainCanvas = document.getElementById("rain-canvas");
+  const rainCtx = rainCanvas.getContext("2d");
+
+  function resizeRain() {
+    rainCanvas.width = window.innerWidth;
+    rainCanvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resizeRain);
+  resizeRain();
+
+  const drops = [];
+  for (let i = 0; i < 200; i++) {
+    drops.push({
+      x: Math.random() * rainCanvas.width,
+      y: Math.random() * rainCanvas.height,
+      length: Math.random() * 20 + 10,
+      speed: Math.random() * 4 + 2,
+      opacity: Math.random() * 0.4 + 0.2
+    });
+  }
+
+  function drawRain() {
+    rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+    rainCtx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+    rainCtx.lineWidth = 1;
+    rainCtx.lineCap = "round";
+
+    for (const drop of drops) {
+      rainCtx.beginPath();
+      rainCtx.moveTo(drop.x, drop.y);
+      rainCtx.lineTo(drop.x, drop.y + drop.length);
+      rainCtx.stroke();
+
+      drop.y += drop.speed;
+      if (drop.y > rainCanvas.height) {
+        drop.y = -drop.length;
+        drop.x = Math.random() * rainCanvas.width;
+      }
+    }
+
+    requestAnimationFrame(drawRain);
+  }
+
+  drawRain();
+
+
+  const canvas = document.getElementById('grain-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function generateGrain() {
+    const imageData = ctx.createImageData(canvas.width, canvas.height);
+    const buffer32 = new Uint32Array(imageData.data.buffer);
+    const len = buffer32.length;
+
+    for (let i = 0; i < len; i++) {
+      if (Math.random() < 0.05) { // 調整密度
+        buffer32[i] = 0xffffffff; // 白色粒子
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  function animateGrain() {
+    generateGrain();
+    requestAnimationFrame(animateGrain);
+  }
+
+  animateGrain();
+</script>
+
+</body>
+</html>

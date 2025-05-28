@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Player</title>
+  <link rel="stylesheet" href="css/style4.css" />
+</head>
+<body>  
+  <header>
+  <nav class="index-list">
+    <a href="index.html"><button>首頁</button></a>
+        <a href="index.html"><button>音樂</button></a>
+       <button>聯絡我們</button>
+  </nav>
+</header>
+  
+  <div class="container">
+    <header>
+      <h1>Music</h1>
+      <nav>
+        <a href="#">如果聲音記得</a>
+      </nav>
+    </header>
+
+    <div class="player">
+      <div class="disc-container">
+        <img src="如果聲音記得/微光.png" alt="Album Cover" class="disc" id="cover">
+      </div>
+      <audio id="audio" src="play-button/獨 - 2025_3_15 上午1.08.m4a"></audio>
+    
+      <div class="info">
+        <h2>微光</h2>
+        <p>2025 • 3 tracks • 44 min</p>
+        <blockquote>
+" 曾經只想當一粒灰塵
+漂泊在沒有人的世界裡
+突然有一道光照進... "
+        </blockquote>
+   
+      <div class="controls">
+        <button onclick="prevSong()"> <img src="play-button/未命名-3_left.png" alt="Album Cover" >
+        </button>
+        <button onclick="togglePlay()"><img src="play-button/未命名-3_play.png" alt="Album Cover" >
+        </button>
+        <button onclick="nextSong()"><img src="play-button/未命名-3_right.png" alt="Album Cover" >
+        </button>
+      </div>
+    </div>
+ 
+      <input type="range" id="progress" value="0" step="1" min="0" max="100" onchange="setProgress(this.value)">
+    </div>
+
+
+    
+    
+   
+      
+
+    
+
+    <h2>歌曲介紹 ></h2>
+        <header></header>
+
+<div class="play-text">
+<p>微光</p>
+
+<p>曾經只想當一粒灰塵
+  漂泊在沒有人的世界裡</p>
+  <p> 突然有一道光照進
+  我開始笑的大聲 盡情大哭 成了個鮮明的活人</p>
+  <p> 這些代表我活著的聲音
+  我都記得</p>
+  <p> shimmer</p>
+  <p>I only wanted to be a speck of dust</p>
+  <p>Drifting in a world without people</p>
+  <p>Suddenly a ray of light shines in</p>
+  <p>I started laughing loudly and crying loudly, becoming a vivid living person.</p>
+  <p>These are my living voices.
+  I remember them all them all...</p>
+</div>
+
+
+    <footer>
+      <p>© 2025 Music App</p>
+      <p>聯絡我們</p>
+      <p> music20032025@gmail.com</p>
+      <p> 02-2252-2672</p>
+    </footer>
+  </div>
+
+ 
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    
+    <script>
+    const audio = document.getElementById("audio");
+    const cover = document.getElementById("cover");
+    const progress = document.getElementById("progress");
+    
+    const songs = [
+    { name: "music1.mp3", cover: "cover1.jpg" },
+    { name: "music2.mp3", cover: "cover2.jpg" },
+    { name: "music3.mp3", cover: "cover3.jpg" }
+    ];
+    
+    let currentSong = 0;
+    
+    function loadSong(index) {
+    audio.src = songs[index].name;
+    cover.src = songs[index].cover;
+    audio.load();
+    togglePlay(true);
+    }
+    
+    function togglePlay(forcePlay = false) {
+    if (audio.paused || forcePlay) {
+      audio.play();
+      cover.classList.add("playing");
+    } else {
+      audio.pause();
+      cover.classList.remove("playing");
+    }
+    }
+    
+    function nextSong() {
+    currentSong = (currentSong + 1) % songs.length;
+    loadSong(currentSong);
+    }
+    
+    function prevSong() {
+    currentSong = (currentSong - 1 + songs.length) % songs.length;
+    loadSong(currentSong);
+    }
+    
+    audio.ontimeupdate = () => {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.value = percent || 0;
+    };
+    
+    function setProgress(val) {
+    audio.currentTime = (val / 100) * audio.duration;
+    }
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background: radial-gradient(
+      circle at center,
+      rgba(210, 180, 126, 0.845),  rgba(228, 195, 117, 0.708) ,
+     /* 中央紫灰色 */ rgba(229, 202, 151, 0.942), 
+     rgba(150, 127, 74, 0.871) 
+     
+      /* 邊緣淺灰藍 */
+    );
+    color: #fff;
+    min-height: 100vh;
+    
+  }    
+  
+  .index-list{
+display: flex;
+flex-direction: row;
+gap: 10px;
+text-align: right;
+position: right;
+margin-left: 1200px;
+margin-top: 10px;
+  }
+  .index-list button{
+    display: flex;
+    margin-left: 20px;
+    color: rgb(255, 255, 255);
+    position: right;
+    background: none;
+    border: none;
+    font-size: 15px;
+}
+  .container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(25px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none; /* 移除預設樣式 */
+    width: 50%;
+    height: 2px;
+    background: white;
+    outline: none;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  
+  /* 軌道 */
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 2px;
+    background: white;
+    border-radius: 1px;
+  }
+  
+  /* 拖曳點（thumb） */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -5px; /* 對齊細線中央 */
+    box-shadow: 0 0 2px rgba(255,255,255,0.5);
+  }
+  
+  /* Firefox */
+  input[type="range"]::-moz-range-track {
+    height: 2px;
+    background: white;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+  }
+  
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  nav a {
+    margin-left: 1rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 300;
+  }
+ 
+  .player {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .disc-container {
+    width: 400px;
+    height: 400px;
+    margin:auto;
+    margin-top: 30px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .disc {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: spin 5s linear infinite;
+    animation-play-state: paused;
+  }
+  
+  .disc.playing {
+    animation-play-state: running;
+  }
+
+ .controls{
+  display: flex;
+  flex-direction: row;
+ margin-left: 490px;
+ 
+ }
+  .controls button{
+    margin: 10px;
+    height: 40px;
+    width: 40px;
+    margin-bottom: 20px;
+    background: none;
+    border: none;
+    display: flex;
+  }
+
+  .controls-play button img{
+    height: 60px;
+    width: 60px;
+    background: none;
+    border: none;
+   
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  
+  
+  
+  
+  
+  
+ 
+  
+  blockquote {
+ 
+    font-style: italic;
+    opacity: 0.8;
+  }
+  
+  .tracklist ul {
+    list-style: none;
+    padding-top: 0rem;
+  }
+  
+  .tracklist li {
+    cursor: pointer;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: color 0.3s;
+  }
+  
+
+  h2 {
+    margin-top: 50px;
+    font-size: 2rem;
+  }
+  .play-text{
+   flex-direction: column;
+   margin-top: 50px;
+   margin-bottom: 200px;
+  }
+ .play-text p {
+  font-size: 1rem;
+  color: #fff;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  margin-top: 50px;
+ }
+ 
+  footer {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-top: 400px;
+    margin-bottom: 0%;
+  }
+  
+  @media (max-width: 768px) {
+    .player {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .cover img {
+      width: 100%;
+      max-width: 280px;
+    }
+  
+    .info {
+      text-align: center;
+    }
+  }

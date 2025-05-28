@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Player</title>
+      <!-- 引入 Bootstrap -->
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>  
+   <!-- 1. 先放背景容器 --><div id="particles-js"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+particlesJS("particles-js", {
+  "particles": {
+    "number": {
+      "value": 200,
+      "density": {
+        "enable": true,
+        "value_area": 1200
+      }
+    },
+    "color": { "value": "#ffffff" },
+    "shape": { "type": "circle" },
+    "opacity": {
+      "value": 10,
+      "random": true
+    },
+    "size": {
+      "value": 1,
+      "random": true
+    },
+    "line_linked": {
+      "enable": false  // 這裡確定設成 false
+    },
+    "move": {
+      "enable": true,
+      "speed": 0.9,
+      "direction": "none",
+      "out_mode": "out"
+    }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "onhover": { "enable": false },
+      "onclick": { "enable": false }
+    }
+  },
+  "retina_detect": true
+});
+</script>
+
+ 
+  <nav class="index-list">
+    <a href="index.html"><button>首頁</button></a>
+        <a href="music2.html"><button>音樂</button></a>
+       <button>聯絡我們</button>
+       </div>
+  </nav>
+
+<head>
+
+
+
+
+<script>
+  function filterMusic() {
+    const input = document.querySelector('.search-input').value.toLowerCase();
+    const items = document.querySelectorAll('.music-item');
+
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      item.classList.toggle('hidden', !text.includes(input));
+    });
+  }
+</script>
+</div>
+</head>
+  <div class="container">
+      <h1>Music</h1>
+      <nav>
+        <a href="#">專輯</a>
+      </nav>
+
+
+    <main class="player">
+      <div class="cover">
+        <img src="如果聲音記得/photo01.png" alt="Album Cover" />
+      </div>
+      <div class="info">
+        <h2>如果聲音記得</h2>
+        <p>2025 • 3 tracks • 58 min</p>
+        <blockquote>
+          “如果聲音記得，你想記得什麼？“
+        </blockquote>
+
+        <audio id="audioPlayer" controls>
+          <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    
+
+      <div class="tracklist">
+        <h3>Tracks</h3>
+        <ul>
+          <li onclick="playTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
+          1.      羈絆</li>
+          <li onclick="https:///Users/xujiayu/Music/Music/Media.localized/Music/Unknown Artist/Unknown Album/獨 - 2025_3_15 上午1.08.m4a">2.      獨</li>
+          <li onclick="playTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">3.      微光</li>
+          
+      </div>
+  
+    </main>
+
+    <h2>排行榜 ></h2>
+    <div class="scroll-gallery">
+      <div class="gallery-wrapper">
+        <img src="play-button/未命名-3-01.png" alt="1">
+        <img src="play-button/未命名-3-02.png" alt="2">
+        <img src="play-button/未命名-3-03.png" alt="3">
+        <img src="play-button/未命名-3-04.png" alt="4">
+        <img src="play-button/未命名-3-05.png" alt="5">
+        <img src="play-button/未命名-3-06.png" alt="6">
+        <img src="play-button/未命名-3-01.png" alt="7">
+        <img src="play-button/未命名-3-02.png" alt="8">
+        <img src="play-button/未命名-3-03.png" alt="9">
+      </div>
+    </div>
+    <h2>2025最新活動 ></h2>
+    <div class="carousel-container">
+      <div class="carousel-slides" id="carouselSlides">
+        <div class="carousel-slide"><img src="如果聲音記得/輪播1.png" alt="Image 1"></div>
+        <div class="carousel-slide"><img src="如果聲音記得/輪播2.png" alt="Image 2"></div>
+        <div class="carousel-slide"><img src="如果聲音記得/輪播3.png" alt="Image 3"></div>
+      </div>
+      <div class="carousel-btn prev-btn" onclick="prevSlide()">&#10094;</div>
+      <div class="carousel-btn next-btn" onclick="nextSlide()">&#10095;</div>
+    </div>
+  
+  
+
+ 
+  
+    <h2>最新歌曲 ></h2>
+ <header></header>
+<div class="scroll-gallery2">
+  <div class="gallery-wrapper2">
+    <section class="music">
+          <div class="music-list2">
+            <img src="如果聲音記得/2.png">
+            <div class="music-text2">
+              <p>微光</p>
+              <p>xujiayu</p> 
+            </div>
+            <div class="music-list2">
+              <img src="如果聲音記得/3.png">
+              <div class="music-text2">
+                <p>羈絆</p>
+                <p>xujiayu</p> 
+              </div>
+          <div class="music-list2">
+            <img src="如果聲音記得/4.png">
+            <div class="music-text2">
+              <p>獨</p>
+              <p>xujiayu</p> 
+              </div>
+          <div class="music-list2">
+            <img src="如果聲音記得/5.png">
+            <div class="music-text2">
+              <p>獨</p>
+              <p>xujiayu</p> 
+            </div>
+          <div class="music-list2">
+            <img src="如果聲音記得/6.png">
+            <div class="music-text2">
+              <p>獨</p>
+              <p>xujiayu</p> 
+            </div>
+
+          <div class="music-list2">
+            <img src="如果聲音記得/78.png">
+            <div class="music-text2">
+              <p>獨</p>
+              <p>xujiayu</p> 
+            </div>
+      
+      <div class="music-list2">
+        <img src="如果聲音記得/微光.png">
+        <div class="music-text2">
+          <p>微光</p>
+          <p>xujiayu</p> 
+        </div>
+        <div class="music-list2">
+          <img src="如果聲音記得/photo2.png">
+          <div class="music-text2">
+            <p>羈絆</p>
+            <p>xujiayu</p> 
+          </div>
+      <div class="music-list2">
+        <img src="如果聲音記得/fe.png">
+        <div class="music-text2">
+          <p>微光</p>
+          <p>xujiayu</p> 
+          </div>
+      <div class="music-list2">
+        <img src="如果聲音記得/未命名-1-02.png">
+        <div class="music-text2">
+          <p>羈絆</p>
+          <p>xujiayu</p> 
+        </div>
+      <div class="music-list2">
+        <img src="如果聲音記得/未命名-1-03.png">
+        <div class="music-text2">
+          <p>獨</p>
+          <p>xujiayu</p> 
+        </div>
+
+      <div class="music-list2">
+        <img src="如果聲音記得/未命名-1-05.png">
+        <div class="music-text2">
+          <p>微光</p>
+          <p>xujiayu</p> 
+        </div>
+  </div>
+</div>
+</section>
+</div>
+</div>
+
+<header></header>
+  
+<div class="scroll-gallery2">
+  <div class="gallery-wrapper2">
+<section class="music">
+
+  <div class="music-list2">
+    <img src="如果聲音記得/微光.png">
+    <div class="music-text2">
+      <p>微光</p>
+      <p>xujiayu</p> 
+    </div>
+    <div class="music-list2">
+      <img src="如果聲音記得/photo2.png">
+      <div class="music-text2">
+        <p>羈絆</p>
+        <p>xujiayu</p> 
+      </div>
+  <div class="music-list2">
+    <img src="如果聲音記得/fe.png">
+    <div class="music-text2">
+      <p>微光</p>
+      <p>xujiayu</p> 
+      </div>
+  <div class="music-list2">
+    <img src="如果聲音記得/未命名-1-02.png">
+    <div class="music-text2">
+      <p>羈絆</p>
+      <p>xujiayu</p> 
+    </div>
+  <div class="music-list2">
+    <img src="如果聲音記得/未命名-1-03.png">
+    <div class="music-text2">
+      <p>獨</p>
+      <p>xujiayu</p> 
+    </div>
+
+  <div class="music-list2">
+    <img src="如果聲音記得/未命名-1-05.png">
+    <div class="music-text2">
+      <p>微光</p>
+      <p>xujiayu</p> 
+    </div>
+  <div class="music-list2">
+    <img src="如果聲音記得/未命名-1-06.png">
+    <div class="music-text2">
+      <p>羈絆</p>
+      <p>xujiayu</p> 
+    </div>
+    <div class="music-list2">
+      <img src="如果聲音記得/未命名-1-08.png">
+      <div class="music-text2">
+        <p>羈絆</p>
+        <p>xujiayu</p> 
+      </div>
+  <div class="music-list2">
+    <img src="如果聲音記得/未命名-1-09.png">
+    <div class="music-text2">
+      <p>獨</p>
+      <p>xujiayu</p> 
+      </div>
+  <div class="music-list2">
+    <img src="如果聲音記得/photo01.png">
+    <div class="music-text2">
+      <p>獨</p>
+      <p>xujiayu</p> 
+    </div>
+  <div class="music-list2">
+    <img src="如果聲音記得/6.png">
+    <div class="music-text2">
+      <p>獨</p>
+      <p>xujiayu</p> 
+    </div>
+
+  <div class="music-list2">
+    <img src="如果聲音記得/78.png">
+    <div class="music-text2">
+      <p>獨</p>
+      <p>xujiayu</p> 
+    </div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<header></header> 
+
+    <h2>發燒歌曲 ></h2>
+<section class="music2">
+        <div class="info2-list">
+            <div class="info2">
+        <img src="如果聲音記得/photo2.png" alt="羈絆">
+       <a href="music2.html">01_羈絆</a>
+        <p>xujiayu</p>
+      </div>
+        <div class="info3">
+          <img src="../如果聲音記得/獨.png" alt="獨">
+          <a href="music03.html">02_獨</a>
+        <p>xujiayu</p>
+        </div>
+        <div class="info4">
+        <img src="../如果聲音記得/微光.png" alt="微光"> 
+        <a href="music4.html">03_微光</a>
+      <p>xujiayu</p>
+      </div>
+  </div>
+</section>
+
+
+<h2>如果聲音記得... ></h2>
+<div class="scroll-gallery">
+  <div class="gallery-wrapper">
+    <img src="如果聲音記得/photo01.png" alt="1">
+    <img src="如果聲音記得/2.png" alt="2">
+    <img src="如果聲音記得/78.png" alt="3">
+    <img src="如果聲音記得/3.png" alt="4">
+    <img src="如果聲音記得/9.png" alt="5">
+    <img src="如果聲音記得/6.png" alt="6">
+    <img src="如果聲音記得/1.png" alt="7">
+    <img src="如果聲音記得/8.png" alt="8">
+    <img src="如果聲音記得/4.png" alt="9">
+  </div>
+</div>
+<h2>探索更多 ></h2>
+<section class="search-list">
+  <div class="search-text">
+  <p>輕快活潑   ></p>
+  </div>
+  <div class="search-text">
+  <p>心情與活動   ></p>
+</div>
+<div class="search-text">
+  <p>古典音樂   ></p>
+  </div>
+</section>
+  <section class="search-list">
+  <div class="search-text">
+  <p>來自全球   ></p>
+</div>
+<div class="search-text">
+  <p>排行榜   ></p>
+</div>
+<div class="search-text">
+  <p>按類別瀏覽   ></p>
+</div>
+</div>
+</section>
+
+
+    <footer>
+      <p>© 2025 Music App</p>
+      <p>聯絡我們</p>
+      <p> music20032025@gmail.com</p>
+      <p> 02-2252-2672</p>
+    </footer>
+    
+  <script>
+         let currentSlide = 0;
+      const slides = document.getElementById('carouselSlides');
+      const totalSlides = slides.children.length;
+  
+      function updateCarousel() {
+        slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+      }
+  
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateCarousel();
+      }
+  
+      function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+      }
+  
+      // Optional: Auto play
+      setInterval(() => {
+        nextSlide();
+      }, 5000); // every 5 seconds
+    
+    function playTrack(url) {
+      const player = document.getElementById("audioPlayer");
+      player.src = url;
+      player.play();
+    }
+
+
+  window.addEventListener('load', () => {
+    const images = document.querySelectorAll('.gallery img');
+    images.forEach(img => {
+      img.classList.add('visible');
+    });
+  });
+  </script>
+
+
+</body>
+
+</html>
