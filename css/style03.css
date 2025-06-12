@@ -282,6 +282,16 @@ margin-top: 10px;
        margin: 0 auto;
        
   }
+  .disc-container {
+    width: 200px;
+    height: 200px;
+    margin:auto;
+    margin-top: 30px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
 
   }
   

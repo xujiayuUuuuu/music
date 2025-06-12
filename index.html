@@ -54,12 +54,43 @@ particlesJS("particles-js", {
 </script>
 
  
-  <nav class="index-list">
-    <a href="index.html"><button>首頁</button></a>
-        <a href="music2.html"><button>音樂</button></a>
-       <button>聯絡我們</button>
-       </div>
-  </nav>
+
+
+<button class="menu-toggle">☰</button>
+
+<nav class="menu" id="menu">
+  <div class="menu-item" onclick="toggleSubMenu('musicSubmenu')">音樂 </div>
+  <div class="submenu" id="musicSubmenu">
+    <a href="music2.html"><button>羈絆</button></a>
+    <a href="music03.html"><button>獨</button></a>
+    <a href="music4.html"><button>微光</button></a>
+  </div>
+
+  <div class="menu-item" onclick="toggleSubMenu('contactSubmenu')">聯絡我們 </div>
+  <div class="submenu" id="contactSubmenu">
+    <a href="index.html"><button>聯絡電話</button></a>
+    <a href="index.html"><button>電子信箱</button></a>
+  
+  </div>
+</div>
+</nav>
+
+
+ <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menu = document.getElementById('menu');
+
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('active');
+    });
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      submenu.classList.toggle('active');
+    }
+  </script>
+
+ 
 
 <head>
 
