@@ -112,7 +112,9 @@ margin-top: 10px;
     text-decoration: none;
     font-weight: 300;
   }
- 
+  nav a:hover {
+    color:black;
+  }
   .player {
     text-align: center;
     padding: 20px;
@@ -128,7 +130,30 @@ margin-top: 10px;
     border: 1.5px solid #fff;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   }
-  
+  .img-show1 img{
+    width: 40%;
+    height: 40%;
+    margin-top: 100px;
+    margin-left: 100px;
+    position: center;
+  }
+  .img-show1 img:hover{
+    width: 20%;
+    height: 20%;
+    margin-top: 100px;
+    margin-left: 600px;
+    position: center;
+  }
+  .img-show2 img{
+    width: 50%;
+    height: 50%;
+    margin-top: 10px;
+    margin-left: 300px;
+    position: center;
+  }
+  .img-show2 img:hover{
+    display: none;
+   }
   .disc {
     width: 100%;
     height: 100%;
@@ -238,8 +263,20 @@ margin-top: 10px;
       text-align: center;
     }
 
-
-    
+    .img-show1 img{
+      width: 50%;
+      height: 50%;
+      margin-top: 100px;
+      margin-left: 10px;
+      position: center;
+    }
+    .img-show2 img{
+      width: 80%;
+      height: 80%;
+      margin-top: 30px;
+      margin-left: 100px;
+      position: center;
+    }
     .index-list{
       display: flex;
       flex-direction: row;

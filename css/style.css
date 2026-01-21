@@ -398,6 +398,7 @@ margin-top: 10px;
 
 .info2 a:hover{
   font-size: 1.8rem;
+  color:#717da2;
 }
   
 
@@ -449,6 +450,7 @@ margin-top: 10px;
 }
 .info3 a:hover{
   font-size: 1.8rem;
+  color:black;
 }
 
 .info4 img {
@@ -493,6 +495,7 @@ margin-top: 10px;
 }
 .info4 a:hover{
   font-size: 1.8rem;
+  color:bisque;
 }
 .music{
   gap:50px;

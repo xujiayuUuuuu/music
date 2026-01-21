@@ -76,7 +76,7 @@ margin-top: 10px;
 }
   .container {
     max-width: 1200px;
-    height: 3000px;
+    height: 4500px;
     margin: 2rem auto;
     padding: 2rem;
     background: rgba(255, 255, 255, 0.08);
@@ -84,7 +84,50 @@ margin-top: 10px;
     backdrop-filter: blur(25px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   }
-
+.img-show1 img{
+  width: 40%;
+  height: 40%;
+  margin-top: 100px;
+  margin-left: 100px;
+  position: center;
+}
+.img-show1 img:hover{
+  width: 20%;
+  height: 20%;
+  margin-top: 100px;
+  margin-left: 600px;
+  position: center;
+}
+.img-show2 img{
+  width: 50%;
+  height: 50%;
+  margin-top: 10px;
+  margin-left: 300px;
+  position: center;
+}
+.img-show2 img:hover{
+  display: none;
+ }
+.img-show3 img{
+  width: 40%;
+  height: 40%;
+  margin-top: 100px;
+  margin-left: 650px;
+  position: center;
+}
+.img-show3 img:hover{
+  display: none;
+ }
+.img-show4 img{
+  width: 60%;
+  height: 60%;
+  margin-top: 10px;
+  margin-left: 30px;
+  position: center;
+}
+.img-show4 img:hover{
+  display: none;
+ }
   input[type="range"] {
     -webkit-appearance: none; /* 移除預設樣式 */
     width: 50%;
@@ -144,7 +187,9 @@ margin-top: 10px;
     text-decoration: none;
     font-weight: 300;
   }
- 
+  nav a:hover {
+    color:#286ea8;
+  }
   .player {
     text-align: center;
     padding: 20px;
@@ -257,7 +302,7 @@ margin-top: 10px;
   @media (max-width: 768px) {
     .container {
       max-width: 1200px;
-      height: 3000px;
+      height: 4500px;
       margin: 2rem auto;
       padding: 2rem;
       background-color:none;
@@ -269,7 +314,34 @@ margin-top: 10px;
       flex-direction: column;
       align-items: center;
     }
-  
+    .img-show1 img{
+      width: 50%;
+      height: 50%;
+      margin-top: 100px;
+      margin-left: 10px;
+      position: center;
+    }
+    .img-show3 img{
+      width: 40%;
+      height: 40%;
+      margin-top: 100px;
+      margin-left: 260px;
+      position: center;
+    }
+    .img-show2 img{
+      width: 80%;
+      height: 80%;
+      margin-top: 30px;
+      margin-left: 100px;
+      position: center;
+    }
+    .img-show4 img{
+      width: 90%;
+      height: 90%;
+      margin-top: 20px;
+      margin-left: 0px;
+      position: center;
+    }
     .cover img {
       width: 30px;
       height: 30px;
