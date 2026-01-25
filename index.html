@@ -353,26 +353,46 @@ particlesJS("particles-js", {
 </div>
 <header></header> 
 
-    <h2>發燒歌曲 ></h2>
-<section class="music2">
-        <div class="info2-list">
-            <div class="info2">
-        <img src="img/photo2.png" alt="羈絆">
-       <a href="music2.html">01_羈絆</a>
-        <p>xujiayu</p>
-      </div>
-        <div class="info3">
-          <img src="img/photo3.png" alt="獨">
-          <a href="music03.html">02_獨</a>
-        <p>xujiayu</p>
-        </div>
-        <div class="info4">
-        <img src="img/photo4.png" alt="微光"> 
-        <a href="music4.html">03_微光</a>
-      <p>xujiayu</p>
-      </div>
+<h2>發燒歌曲 ></h2>
+<p>
+  這三張單曲紀錄了各個不同的記憶
+  <br>聲音也是記憶的一部分... </p>
+    <p>可以點擊圖片查看更多 <br>></p>
+<section class="spatial-gallery">
+  <div class="album-stack">
+    <div class="album-card"
+      data-title="羈絆"
+      data-desc="陪伴、友情與親情交織而成的聲音記憶。"
+      data-link="music2.html">
+      <img src="img/photo2.png">
+    </div>
+
+    <div class="album-card"
+      data-title="獨"
+      data-desc="獨自一人時，最清楚聽見的內在聲音。"
+      data-link="music03.html">
+      <img src="img/photo3.png">
+    </div>
+
+    <div class="album-card"
+      data-title="微光"
+      data-desc="在黑暗中仍然存在的那一點聲音。"
+      data-link="music4.html">
+      <img src="img/photo4.png">
+    </div>
+
   </div>
 </section>
+
+<div class="album-panel" id="albumPanel">
+  <button class="panel-close" id="closePanel">×</button>
+  <h2 id="panelTitle"></h2>
+  <p id="panelDesc"></p>
+  <a id="panelLink">view more →</a>
+</div>
+
+
+
 
 
 <h2>如果聲音記得... ></h2>
@@ -422,6 +442,8 @@ particlesJS("particles-js", {
       <p> music20032025@gmail.com</p>
       <p> 02-2252-2672</p>
     </footer>
+    </div>
+    
     
   <script>
          let currentSlide = 0;
@@ -460,9 +482,27 @@ particlesJS("particles-js", {
       img.classList.add('visible');
     });
   });
+  const panel = document.getElementById('albumPanel');
+const title = document.getElementById('panelTitle');
+const desc = document.getElementById('panelDesc');
+const link = document.getElementById('panelLink');
+
+document.querySelectorAll('.album-card').forEach(card => {
+  card.addEventListener('click', () => {
+    title.textContent = card.dataset.title;
+    desc.textContent = card.dataset.desc;
+    link.href = card.dataset.link;
+    panel.classList.add('show');
+  });
+});
+
+document.getElementById('closePanel').addEventListener('click', () => {
+  panel.classList.remove('show');
+});
+
   </script>
-
-
+  
+  
 </body>
 
 </html>

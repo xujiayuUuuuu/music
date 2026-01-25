@@ -15,11 +15,7 @@ body {
     
   }
 
-  body {
-    font-family: sans-serif;
-    background-color: #111;
-    color: white;
-  }
+ 
 
   .menu-toggle {
     font-size: 40px;
@@ -475,7 +471,162 @@ margin-top: 10px;
     margin-left: 120px;
     
 }
+.spatial-gallery {
+  perspective: 2000px;
+  height: 480px;
+padding-left: 300px;
+}
+
+
+.album-stack {
+  pointer-events: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  transform: rotateX(-8deg) rotateY(-15deg);
+}
+
+
+
+.album-card {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform .8s ease;
+  pointer-events: auto;
+}
+.album-card:hover {
+  width: 400px;
+  height: 400px;
+}
+.album-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0);
+  box-shadow: 0 30px 80px rgba(0,0,0,.35);
+}
+
+.album-card:nth-child(1) {
+  left: 0;
+  top: 120px;
+  transform: translateZ(0px) rotateY(-6deg);
+}
+
+
+.album-card:nth-child(2) {
+  left: 240px;
+  top: 60px;
+  transform: translateZ(-120px) rotateY(-6deg);
+}
+
+.album-card:nth-child(3) {
+  left: 400px;
+  top: 0;
+  transform: translateZ(-300px) rotateY(-1deg);
+}
+
+.album-float {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) translateX(40px);
+  transition: all .4s ease;
+}
+
+.album-float.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-20%) translateX(0);
+}
+
+
+.album-card.active {
+  transform: translate(-50%, -50%) scale(1.05);
+  z-index: 5;
+  opacity: 0.9;
+}
+.album-panel {
+  position: fixed;
+
+  left: 30px;
+ top:2450px;
+
+  width: 400px;
+  padding: 36px;
+
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(22px);
+  border-radius: 18px;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(40px);
+
+  transition: all .4s ease;
+  z-index: 999;
+}
+.album-panel a{
+  color: #fff;
+}
+.album-panel a:hover{
+  color:#717da2;
+}
+.album-panel.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+
+.album-panel.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
+}
+
+
+/* 關閉鍵 */
+.panel-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  background: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.panel-content {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-45%);
+  max-width: 420px;
+  padding: 60px 50px;
+}
+
+
+/* 文字 */
+.album-panel h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
   
+}
+
+.album-panel p {
+  font-size: 1rem;
+  line-height: 1.7;
+  opacity: 0.85;
+  margin-bottom: 30px;
+}
+
+
 
 .info4 p{
     font-size: 1rem;
@@ -564,6 +715,7 @@ padding-left: 10px;
     color: rgb(255, 255, 255);
     font-size: 1.2rem;
   }
+  
   @media (max-width: 768px) {
     .menu-toggle {
       font-size: 35px;
@@ -776,4 +928,145 @@ display: none;
   border: none;
  
 }
+
+ 
+
+  /* ❷ 3D 場景降級（手機不適合太深） */
+  .spatial-gallery {
+    perspective: 1000px;
+    height: 500px;
+    overflow: hidden;
+    padding-left: 150px;
+    background: none;
+    margin-top: 10px;
   }
+
+  .album-stack {
+    transform: rotateY(0deg); /* 只留一點點側視 */
+    background: none;
+   
+  }
+
+  /* ❸ 卡片尺寸穩定，不再亂變 */
+  .album-card {
+    width: 240px;
+    height: 240px;
+    transition: transform .35s ease;
+    background: none;
+  }
+
+  .album-card:hover {
+    width: 280px;
+    height: 280px;
+  }
+
+  /* ❹ 三張「像書站著」 */
+  .album-card:nth-child(1) {
+    left: 10%;
+    transform: translateX(-60%) translateZ(0px);
+    z-index: 2;
+  }
+
+  .album-card:nth-child(2) {
+    left: 10%;
+    transform: translateX(-40%) translateZ(-60px);
+    z-index: 1;
+  }
+
+  .album-card:nth-child(3) {
+    left: 20%;
+    transform: translateX(-20%) translateZ(-120px);
+    z-index: 1;
+  }
+
+  /* ❺ 點擊才抽出（CD 感） */
+  .album-card.active {
+    transform: translateX(-60%) translateZ(40px);
+  }
+
+  /* ❻ 圖片不要再糊 */
+  .album-card img {
+    filter: none;
+    opacity: 1;
+    border-radius: 4px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.35);
+  }
+
+  .album-panel {
+    position: fixed;
+  
+    left: 150px;
+   top:3100px;
+  
+    width: 200px;
+    padding: 28px;
+  
+    background: none;
+    backdrop-filter:none;
+    border-radius: 18px;
+  
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(40px);
+  
+    transition: all .4s ease;
+    z-index: 999;
+  }
+  .album-panel a{
+    color: #fff;
+  }
+  .album-panel a:hover{
+    color:#717da2;
+  }
+  .album-panel.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  
+  
+  .album-panel.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0);
+  }
+  
+  
+  /* 關閉鍵 */
+  .panel-close {
+    position: absolute;
+    top: 60px;
+    right: 4px;
+    border-radius:20px;
+    background: none;
+   size: 1cap;
+    color: #333333;
+    background-color: #ffffff;
+    cursor: pointer;
+  }
+  .panel-content {
+    position: absolute;
+    top: 80%;
+    
+    transform: translateY(-85%);
+    max-width: 300px;
+    padding: 100px 100px;
+  }
+  
+  
+  /* 文字 */
+  .album-panel h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    
+  }
+  
+  .album-panel p {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    opacity: 0.85;
+    margin-bottom: 10px;
+  }
+}
+
+  

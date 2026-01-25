@@ -39,8 +39,13 @@
         <a href="music2.html"><button>音樂</button></a>
        <button>聯絡我們</button>
   </nav>
-</header>
+ 
   
+</header>
+
+
+<div class="fog"></div>
+
   <div class="container">
     <header>
       
@@ -70,15 +75,20 @@
       </blockquote>
   
        
-          <div class="controls">
-            <button onclick="prevSong()"> <img src="play-button/未命名-3_left.png" alt="Album Cover" >
-            </button>
-            <button onclick="togglePlay()"><img src="play-button/未命名-3_play.png" alt="Album Cover" >
-            </button>
-            <button onclick="nextSong()"><img src="play-button/未命名-3_right.png" alt="Album Cover" >
-            </button>
-          </div>
-        </div>
+      <div class="controls">
+        <!-- 倒退 10 秒 -->
+        <button onclick="seek(-10)" class="icon-btn">
+          <span class="seek-double left"></span>
+        </button>
+      
+        <!-- 播放 / 暫停 -->
+        <button onclick="togglePlay()" id="playBtn" class="icon-btn play-btn">▶</button>
+      
+        <!-- 快轉 10 秒 -->
+        <button onclick="seek(10)" class="icon-btn">
+          <span class="seek-double right"></span>
+        </button>
+      </div>
      
           <input type="range" id="progress" value="0" step="1" min="0" max="100" onchange="setProgress(this.value)">
         </div>
@@ -128,176 +138,133 @@
     <p> 02-2252-2672</p>
   </footer>
    <!-- 粗粒磨砂效果 -->
-<canvas id="grain-canvas"></canvas>
+   <canvas id="rainCanvas"></canvas>
 
-<!-- 下雨動畫效果 -->
-<canvas id="rain-canvas"></canvas>
-</div>
 </div>
 
 
 
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
 <script>
-const audio = document.getElementById("audio");
-const cover = document.getElementById("cover");
-const progress = document.getElementById("progress");
-
-const songs = [
-{ name: "music1.mp3", cover: "cover1.jpg" },
-{ name: "music2.mp3", cover: "cover2.jpg" },
-{ name: "music3.mp3", cover: "cover3.jpg" }
-];
-
-let currentSong = 0;
-
-function loadSong(index) {
-audio.src = songs[index].name;
-cover.src = songs[index].cover;
-audio.load();
-togglePlay(true);
-}
-
-function togglePlay(forcePlay = false) {
-if (audio.paused || forcePlay) {
-  audio.play();
-  cover.classList.add("playing");
-} else {
-  audio.pause();
-  cover.classList.remove("playing");
-}
-}
-
-function nextSong() {
-currentSong = (currentSong + 1) % songs.length;
-loadSong(currentSong);
-}
-
-function prevSong() {
-currentSong = (currentSong - 1 + songs.length) % songs.length;
-loadSong(currentSong);
-}
-
-audio.ontimeupdate = () => {
-const percent = (audio.currentTime / audio.duration) * 100;
-progress.value = percent || 0;
-};
-
-function setProgress(val) {
-audio.currentTime = (val / 100) * audio.duration;
-}
-</script>
-<script>
-  // ========== Grain Canvas ==========
-  const grainCanvas = document.getElementById("grain-canvas");
-  const grainCtx = grainCanvas.getContext("2d");
-
-  function resizeGrain() {
-    grainCanvas.width = window.innerWidth;
-    grainCanvas.height = window.innerHeight;
-  }
-  window.addEventListener("resize", resizeGrain);
-  resizeGrain();
-
-  function generateGrain() {
-    const imageData = grainCtx.createImageData(grainCanvas.width, grainCanvas.height);
-    const buffer32 = new Uint32Array(imageData.data.buffer);
-    const len = buffer32.length;
-
-    for (let i = 0; i < len; i++) {
-      if (Math.random() < 0.05) {
-        buffer32[i] = 0xffffffff; // white pixel
-      }
+  const audio = document.getElementById("audio");
+  const cover = document.getElementById("cover");
+  const progress = document.getElementById("progress");
+  const playBtn = document.getElementById("playBtn");
+  
+  /* 播放 / 暫停切換 */
+  function togglePlay() {
+    if (audio.paused) {
+      audio.play();
+      playBtn.textContent = "||";   // 變成暫停符號
+      cover.classList.add("playing");
+    } else {
+      audio.pause();
+      playBtn.textContent = "▶";    // 回到播放符號
+      cover.classList.remove("playing");
     }
+  }
+  
+  /* 快轉 / 倒退 10 秒 */
+  function seek(seconds) {
+    audio.currentTime = Math.max(
+      0,
+      Math.min(audio.currentTime + seconds, audio.duration)
+    );
+  }
+  
+  /* 進度條更新 */
+  audio.ontimeupdate = () => {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.value = percent || 0;
+  };
+  
+  /* 拖拉進度條 */
+  function setProgress(val) {
+    audio.currentTime = (val / 100) * audio.duration;
+  }
+  
+  /* 播完自動切回播放鍵 */
+  audio.onended = () => {
+    playBtn.textContent = "▶";
+    cover.classList.remove("playing");
+  };
+  </script>
+  <script>
+  const canvas = document.getElementById("rainCanvas");
+  const ctx = canvas.getContext("2d");
+  function resizeCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = document.documentElement.scrollHeight;
+}
 
-    grainCtx.putImageData(imageData, 0, 0);
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class RainDrop {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = -Math.random() * canvas.height;
+
+    this.length  = 200 + Math.random() * 220;
+    this.speed   = 4 + Math.random() * 9;
+    this.width   = 0.08 + Math.random() * 0.1;
+    this.opacity = 0.7 + Math.random() * 0.45;
+    this.curve   = (Math.random() - 0.1) * 0.1;
   }
 
-  function animateGrain() {
-    generateGrain();
-    requestAnimationFrame(animateGrain);
+  update() {
+    this.y += this.speed;
+    this.x += this.curve;
+
+    if (this.y > canvas.height + this.length) {
+      this.reset();
+    }
   }
 
-  animateGrain();
+    draw() {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
+      ctx.lineWidth = this.width;
+      ctx.lineCap = "round";
 
-  // ========== Rain Canvas ==========
-  const rainCanvas = document.getElementById("rain-canvas");
-  const rainCtx = rainCanvas.getContext("2d");
+      ctx.moveTo(this.x, this.y);
+      ctx.quadraticCurveTo(
+        this.x + this.curve * 90,
+        this.y + this.length / 1,
+        this.x,
+        this.y + this.length
+      );
 
-  function resizeRain() {
-    rainCanvas.width = window.innerWidth;
-    rainCanvas.height = window.innerHeight;
+      ctx.stroke();
+    }
   }
-  window.addEventListener("resize", resizeRain);
-  resizeRain();
 
   const drops = [];
-  for (let i = 0; i < 200; i++) {
-    drops.push({
-      x: Math.random() * rainCanvas.width,
-      y: Math.random() * rainCanvas.height,
-      length: Math.random() * 20 + 10,
-      speed: Math.random() * 4 + 2,
-      opacity: Math.random() * 0.4 + 0.2
-    });
+  const DROP_COUNT = Math.floor(window.innerWidth / 3);
+
+  for (let i = 0; i < DROP_COUNT; i++) {
+    drops.push(new RainDrop());
   }
 
-  function drawRain() {
-    rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
-    rainCtx.strokeStyle = "rgba(255, 255, 255, 0.2)";
-    rainCtx.lineWidth = 1;
-    rainCtx.lineCap = "round";
+  function animate() {
+  ctx.globalCompositeOperation = "source-over";
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (const drop of drops) {
-      rainCtx.beginPath();
-      rainCtx.moveTo(drop.x, drop.y);
-      rainCtx.lineTo(drop.x, drop.y + drop.length);
-      rainCtx.stroke();
+  ctx.filter = "blur(0.01px)";
 
-      drop.y += drop.speed;
-      if (drop.y > rainCanvas.height) {
-        drop.y = -drop.length;
-        drop.x = Math.random() * rainCanvas.width;
-      }
-    }
-
-    requestAnimationFrame(drawRain);
+  for (const drop of drops) {
+    drop.update();
+    drop.draw();
   }
 
-  drawRain();
+  ctx.filter = "none";
+  requestAnimationFrame(animate);
+}
 
-
-  const canvas = document.getElementById('grain-canvas');
-  const ctx = canvas.getContext('2d');
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  function generateGrain() {
-    const imageData = ctx.createImageData(canvas.width, canvas.height);
-    const buffer32 = new Uint32Array(imageData.data.buffer);
-    const len = buffer32.length;
-
-    for (let i = 0; i < len; i++) {
-      if (Math.random() < 0.05) { // 調整密度
-        buffer32[i] = 0xffffffff; // 白色粒子
-      }
-    }
-
-    ctx.putImageData(imageData, 0, 0);
-  }
-
-  function animateGrain() {
-    generateGrain();
-    requestAnimationFrame(animateGrain);
-  }
-
-  animateGrain();
+  animate();
 </script>
 
 </body>

@@ -48,16 +48,23 @@
         不同交織的情感“
       </blockquote>
       <p>click to play music</p>
-       
-          <div class="controls">
-            <button onclick="prevSong()"> <img src="play-button/未命名-3_left.png" alt="Album Cover" >
-            </button>
-            <button onclick="togglePlay()"><img src="play-button/未命名-3_play.png" alt="Album Cover" >
-            </button>
-            <button onclick="nextSong()"><img src="play-button/未命名-3_right.png" alt="Album Cover" >
-            </button>
-          </div>
-        </div>
+      <div class="controls">
+        <!-- 倒退 10 秒 -->
+        <button onclick="seek(-10)" class="icon-btn">
+          <span class="seek-double left"></span>
+        </button>
+      
+        <!-- 播放 / 暫停 -->
+        <button onclick="togglePlay()" id="playBtn" class="icon-btn play-btn">▶</button>
+      
+        <!-- 快轉 10 秒 -->
+        <button onclick="seek(10)" class="icon-btn">
+          <span class="seek-double right"></span>
+        </button>
+      </div>
+      
+      
+      
      
           <input type="range" id="progress" value="0" step="1" min="0" max="100" onchange="setProgress(this.value)">
         </div>
@@ -120,54 +127,51 @@
 
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
-  <script>
-  const audio = document.getElementById("audio");
+ 
+ <script>
+const audio = document.getElementById("audio");
 const cover = document.getElementById("cover");
 const progress = document.getElementById("progress");
+const playBtn = document.getElementById("playBtn");
 
-const songs = [
-  { name: "music1.mp3", cover: "cover1.jpg" },
-  { name: "music2.mp3", cover: "cover2.jpg" },
-  { name: "music3.mp3", cover: "cover3.jpg" }
-];
-
-let currentSong = 0;
-
-function loadSong(index) {
-  audio.src = songs[index].name;
-  cover.src = songs[index].cover;
-  audio.load();
-  togglePlay(true);
-}
-
-function togglePlay(forcePlay = false) {
-  if (audio.paused || forcePlay) {
+/* 播放 / 暫停切換 */
+function togglePlay() {
+  if (audio.paused) {
     audio.play();
+    playBtn.textContent = "||";   // 變成暫停符號
     cover.classList.add("playing");
   } else {
     audio.pause();
+    playBtn.textContent = "▶";    // 回到播放符號
     cover.classList.remove("playing");
   }
 }
 
-function nextSong() {
-  currentSong = (currentSong + 1) % songs.length;
-  loadSong(currentSong);
+/* 快轉 / 倒退 10 秒 */
+function seek(seconds) {
+  audio.currentTime = Math.max(
+    0,
+    Math.min(audio.currentTime + seconds, audio.duration)
+  );
 }
 
-function prevSong() {
-  currentSong = (currentSong - 1 + songs.length) % songs.length;
-  loadSong(currentSong);
-}
-
+/* 進度條更新 */
 audio.ontimeupdate = () => {
   const percent = (audio.currentTime / audio.duration) * 100;
   progress.value = percent || 0;
 };
 
+/* 拖拉進度條 */
 function setProgress(val) {
   audio.currentTime = (val / 100) * audio.duration;
 }
-  </script>
+
+/* 播完自動切回播放鍵 */
+audio.onended = () => {
+  playBtn.textContent = "▶";
+  cover.classList.remove("playing");
+};
+</script>
+
 </body>
 </html>

@@ -39,15 +39,20 @@
 突然有一道光照進... "
         </blockquote>
    
-      <div class="controls">
-        <button onclick="prevSong()"> <img src="play-button/未命名-3_left.png" alt="Album Cover" >
-        </button>
-        <button onclick="togglePlay()"><img src="play-button/未命名-3_play.png" alt="Album Cover" >
-        </button>
-        <button onclick="nextSong()"><img src="play-button/未命名-3_right.png" alt="Album Cover" >
-        </button>
-      </div>
-    </div>
+        <div class="controls">
+          <!-- 倒退 10 秒 -->
+          <button onclick="seek(-10)" class="icon-btn">
+            <span class="seek-double left"></span>
+          </button>
+        
+          <!-- 播放 / 暫停 -->
+          <button onclick="togglePlay()" id="playBtn" class="icon-btn play-btn">▶</button>
+        
+          <!-- 快轉 10 秒 -->
+          <button onclick="seek(10)" class="icon-btn">
+            <span class="seek-double right"></span>
+          </button>
+        </div>
  
       <input type="range" id="progress" value="0" step="1" min="0" max="100" onchange="setProgress(this.value)">
     </div>
@@ -93,6 +98,7 @@
       <p> music20032025@gmail.com</p>
       <p> 02-2252-2672</p>
     </footer>
+    <canvas id="fireflyCanvas"></canvas>
   </div>
 
  
@@ -100,59 +106,133 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     
     <script>
-    const audio = document.getElementById("audio");
-    const cover = document.getElementById("cover");
-    const progress = document.getElementById("progress");
-    
-    const songs = [
-    { name: "music1.mp3", cover: "cover1.jpg" },
-    { name: "music2.mp3", cover: "cover2.jpg" },
-    { name: "music3.mp3", cover: "cover3.jpg" }
-    ];
-    
-    let currentSong = 0;
-    
-    function loadSong(index) {
-    audio.src = songs[index].name;
-    cover.src = songs[index].cover;
-    audio.load();
-    togglePlay(true);
-    }
-    
-    function togglePlay(forcePlay = false) {
-    if (audio.paused || forcePlay) {
-      audio.play();
-      cover.classList.add("playing");
-    } else {
-      audio.pause();
-      cover.classList.remove("playing");
-    }
-    }
-    
-    function nextSong() {
-    currentSong = (currentSong + 1) % songs.length;
-    loadSong(currentSong);
-    }
-    
-    function prevSong() {
-    currentSong = (currentSong - 1 + songs.length) % songs.length;
-    loadSong(currentSong);
-    }
-    
-    audio.ontimeupdate = () => {
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progress.value = percent || 0;
-    };
-    
-    function setProgress(val) {
-    audio.currentTime = (val / 100) * audio.duration;
-    }
-    window.addEventListener('load', () => {
-    const images = document.querySelectorAll('.gallery img');
-    images.forEach(img => {
-      img.classList.add('visible');
-    });
-  });
-  </script>
+      const audio = document.getElementById("audio");
+      const cover = document.getElementById("cover");
+      const progress = document.getElementById("progress");
+      const playBtn = document.getElementById("playBtn");
+      
+      /* 播放 / 暫停切換 */
+      function togglePlay() {
+        if (audio.paused) {
+          audio.play();
+          playBtn.textContent = "||";   // 變成暫停符號
+          cover.classList.add("playing");
+        } else {
+          audio.pause();
+          playBtn.textContent = "▶";    // 回到播放符號
+          cover.classList.remove("playing");
+        }
+      }
+      
+      /* 快轉 / 倒退 10 秒 */
+      function seek(seconds) {
+        audio.currentTime = Math.max(
+          0,
+          Math.min(audio.currentTime + seconds, audio.duration)
+        );
+      }
+      
+      /* 進度條更新 */
+      audio.ontimeupdate = () => {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progress.value = percent || 0;
+      };
+      
+      /* 拖拉進度條 */
+      function setProgress(val) {
+        audio.currentTime = (val / 100) * audio.duration;
+      }
+      
+      /* 播完自動切回播放鍵 */
+      audio.onended = () => {
+        playBtn.textContent = "▶";
+        cover.classList.remove("playing");
+      };
+      </script>
+      <script>
+        const canvas = document.getElementById("fireflyCanvas");
+        const ctx = canvas.getContext("2d");
+        
+        function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = document.documentElement.scrollHeight;
+}
+
+        resize();
+        window.addEventListener("resize", resize);
+        
+        /* ===== 螢火蟲物件 ===== */
+        class Firefly {
+          constructor() {
+            this.reset();
+          }
+        
+          reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+        
+            this.radius = 1 + Math.random() * 1.2;
+            this.speedX = (Math.random() - 0.5) * 0.5;
+            this.speedY = (Math.random() - 0.5) * 0.5;
+            this.baseAlpha = 0.45 + Math.random() * 0.35;
+            this.alpha = this.baseAlpha;
+            this.phase = Math.random() * Math.PI * 2;
+            this.glow = 20 + Math.random() * 40;
+          }
+        
+          update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+        
+            this.phase += 0.02;
+            this.alpha = this.baseAlpha + Math.sin(this.phase) * 0.25;
+        
+            // 超出畫面就從另一邊回來
+            if (this.x < -50) this.x = canvas.width + 50;
+            if (this.x > canvas.width + 50) this.x = -50;
+            if (this.y < -50) this.y = canvas.height + 50;
+            if (this.y > canvas.height + 50) this.y = -50;
+          }
+        
+          draw() {
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(255, 240, 180, ${this.alpha})`;
+            ctx.shadowColor = "rgba(255, 230, 160, 0.8)";
+            ctx.shadowBlur = this.glow;
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        
+        /* ===== 建立螢火蟲 ===== */
+        const AREA = canvas.width * canvas.height;
+const FIREFLY_COUNT = Math.floor(AREA / 8000);
+
+
+        const fireflies = [];
+        
+        for (let i = 0; i < FIREFLY_COUNT; i++) {
+          fireflies.push(new Firefly());
+        }
+        
+        /* ===== 動畫 ===== */
+        function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.filter = "blur(0.8px)";
+  ctx.shadowColor = "rgba(255,230,160,0.8)";
+
+  for (const f of fireflies) {
+    ctx.shadowBlur = f.glow;
+    f.update();
+    f.draw();
+  }
+
+  ctx.filter = "none";
+  requestAnimationFrame(animate);
+}
+animate();
+        </script>
+        
 </body>
 </html>

@@ -12,7 +12,71 @@ body {
     color: #fff;
     min-height: 100vh;
     
-  }    
+  }   
+  
+.icon-btn {
+  background: none;
+  border: none;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* 播放鍵 */
+.play-btn {
+  font-size: 22px;
+  color: white;
+}
+
+/* ===== 雙箭頭快轉 / 倒退 ===== */
+.seek-double {
+  position: relative;
+  width: 22px;
+  height: 14px;
+}
+
+.seek-double::before,
+.seek-double::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
+/* 倒退 << */
+.seek-double.left::before {
+  left: 0;
+  border-right: 8px solid white;
+}
+.seek-double.left::after {
+  left: 8px;
+  border-right: 8px solid white;
+}
+
+/* 快轉 >> */
+.seek-double.right::before {
+  right: 0;
+  border-left: 8px solid white;
+}
+.seek-double.right::after {
+  right: 8px;
+  border-left: 8px solid white;
+}
+
+/* hover 微互動 */
+.icon-btn:hover {
+  opacity: 0.7;
+  transform: scale(1.05);
+  transition: 0.2s;
+}
+
+ 
   #particles-js {
     position: fixed;
     width: 100%;
@@ -188,6 +252,13 @@ margin-top: 10px;
   @keyframes spin {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
+  }
+  #fireflyCanvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
   }
   
   

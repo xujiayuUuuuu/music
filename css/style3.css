@@ -10,20 +10,9 @@ body {
     overflow-y: auto;
     color: #fff;
     min-height: 100vh;
-  }
   
-  #grain-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3000px;
-    z-index: -2;
-    pointer-events: none;
-    filter: contrast(130%) brightness(3);
-    opacity: 1; /* 粒子透明度 */
   }
-  
+
   .index-list{
 display: flex;
 flex-direction: row;
@@ -42,13 +31,77 @@ margin-top: 10px;
     border: none;
     font-size: 15px;
 }
+
+.icon-btn {
+  background: none;
+  border: none;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* 播放鍵 */
+.play-btn {
+  font-size: 22px;
+  color: white;
+}
+
+/* ===== 雙箭頭快轉 / 倒退 ===== */
+.seek-double {
+  position: relative;
+  width: 22px;
+  height: 14px;
+}
+
+.seek-double::before,
+.seek-double::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+
+/* 倒退 << */
+.seek-double.left::before {
+  left: 0;
+  border-right: 8px solid white;
+}
+.seek-double.left::after {
+  left: 8px;
+  border-right: 8px solid white;
+}
+
+/* 快轉 >> */
+.seek-double.right::before {
+  right: 0;
+  border-left: 8px solid white;
+}
+.seek-double.right::after {
+  right: 8px;
+  border-left: 8px solid white;
+}
+
+/* hover 微互動 */
+.icon-btn:hover {
+  opacity: 0.7;
+  transform: scale(1.05);
+  transition: 0.2s;
+}
+
+
   .container {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 2rem;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 16px;
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(14px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   }
 
@@ -245,7 +298,17 @@ margin-top: 10px;
     margin-top: 400px;
     margin-bottom: 0%;
   }
+  #rainCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 3;   /* 🔴 原本是 -2，這就是你看不到的原因 */
+  }
   
+
   @media (max-width: 768px) {
   
     .container{
