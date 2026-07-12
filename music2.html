@@ -55,7 +55,7 @@
         </button>
       
         <!-- 播放 / 暫停 -->
-        <button onclick="togglePlay()" id="playBtn" class="icon-btn play-btn">▶</button>
+        <button onclick="togglePlay()" id="playBtn" class="icon-btn play-btn"><span class="play-icon"></span></button>
       
         <!-- 快轉 10 秒 -->
         <button onclick="seek(10)" class="icon-btn">
@@ -138,11 +138,11 @@ const playBtn = document.getElementById("playBtn");
 function togglePlay() {
   if (audio.paused) {
     audio.play();
-    playBtn.textContent = "||";   // 變成暫停符號
+    playBtn.innerHTML = '<span class="pause-icon"></span>';
     cover.classList.add("playing");
   } else {
     audio.pause();
-    playBtn.textContent = "▶";    // 回到播放符號
+    playBtn.innerHTML = '<span class="play-icon"></span>';
     cover.classList.remove("playing");
   }
 }
@@ -168,7 +168,7 @@ function setProgress(val) {
 
 /* 播完自動切回播放鍵 */
 audio.onended = () => {
-  playBtn.textContent = "▶";
+  playBtn.innerHTML = '<span class="play-icon"></span>';
   cover.classList.remove("playing");
 };
 </script>

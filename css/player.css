@@ -1,0 +1,493 @@
+/* ─── Global Music Player ─── */
+
+/* body 當播放器出現時，底部留空間 */
+body.has-player {
+  padding-bottom: 80px;
+}
+
+/* ── 播放器容器 ── */
+.global-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 20px;
+
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(32px) saturate(1.6);
+  -webkit-backdrop-filter: blur(32px) saturate(1.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 -2px 24px rgba(180, 190, 210, 0.18);
+
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.global-player.active {
+  transform: translateY(0);
+}
+
+/* ── mini area（封面 + 資訊）整體不超出 ── */
+.gp-mini-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 0 1 220px;
+  overflow: hidden;
+}
+
+/* ── 封面 ── */
+.gp-cover-wrap {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  max-width: 50px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+}
+
+.gp-cover-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.gp-cover-wrap:hover img {
+  transform: scale(1.05);
+}
+
+/* ── 歌曲資訊 ── */
+.gp-info {
+  min-width: 0;
+  flex: 1 1 0;
+  overflow: hidden;
+}
+
+.gp-title {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(40, 45, 65, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.04em;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.gp-author {
+  display: block;
+  font-size: 0.72rem;
+  color: rgba(80, 90, 120, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+}
+
+/* ── 控制鍵 ── */
+.gp-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.gp-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  border-radius: 50%;
+  transition: color 0.2s, background 0.2s, transform 0.15s;
+  flex-shrink: 0;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.gp-btn:hover {
+  color: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.08);
+}
+
+.gp-btn.gp-active {
+  color: #fff;
+}
+
+/* 播放/暫停鍵 — 較大 */
+.gp-playpause {
+  width: 44px !important;
+  height: 44px !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-size: 1.1rem !important;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+.gp-playpause:hover {
+  background: rgba(255, 255, 255, 0.32) !important;
+}
+
+/* ── 上一首 / 下一首 CSS 三角箭頭（白色） ── */
+.gp-arrow {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.18));
+}
+
+.gp-arrow::before,
+.gp-arrow::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+/* 上一首 << */
+.gp-arrow-prev::before {
+  left: 0;
+  border-right: 8px solid rgba(255, 255, 255, 0.9);
+}
+.gp-arrow-prev::after {
+  left: 9px;
+  border-right: 8px solid rgba(255, 255, 255, 0.9);
+}
+
+/* 下一首 >> */
+.gp-arrow-next::before {
+  right: 9px;
+  border-left: 8px solid rgba(255, 255, 255, 0.9);
+}
+.gp-arrow-next::after {
+  right: 0;
+  border-left: 8px solid rgba(255, 255, 255, 0.9);
+}
+
+/* ── 統一播放 / 暫停 CSS 圖示 ── */
+.play-icon {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 0 7px 13px;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
+  margin-left: 2px;
+  pointer-events: none;
+}
+
+.pause-icon,
+.gp-pause-icon {
+  position: relative;
+  display: inline-block;
+  width: 12px;
+  height: 15px;
+  pointer-events: none;
+}
+
+.pause-icon::before,
+.pause-icon::after,
+.gp-pause-icon::before,
+.gp-pause-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+}
+
+.pause-icon::before,
+.gp-pause-icon::before { left: 0; }
+.pause-icon::after,
+.gp-pause-icon::after  { right: 0; }
+
+/* ── 進度條區 ── */
+.gp-progress-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.gp-time {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.gp-progress-track {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.gp-fill,
+#gpFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+  pointer-events: none;
+  transition: width 0.1s linear;
+}
+
+.gp-progress-track:hover .gp-fill,
+.gp-progress-track:hover #gpFill {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+/* range input 透明覆蓋在進度條上 */
+#gpProgress {
+  position: absolute;
+  inset: -10px 0;
+  width: 100%;
+  height: calc(100% + 20px);
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+/* ── 音量 ── */
+.gp-volume-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+#gpVolume {
+  width: 76px;
+  height: 2px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+#gpVolume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(100, 120, 180, 0.3);
+}
+
+#gpVolume::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+/* ── 關閉 ── */
+.gp-close {
+  color: rgba(255, 255, 255, 0.35) !important;
+  font-size: 0.82rem !important;
+}
+
+.gp-close:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ── 點擊不顯示藍線框 ── */
+img,
+[data-play-id],
+[data-play-id] img,
+.music-list2,
+.gallery-wrapper img,
+.gallery-wrapper2 img {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img:focus,
+img:focus-visible,
+[data-play-id]:focus,
+[data-play-id]:focus-visible,
+[data-play-id] img:focus,
+[data-play-id] img:focus-visible {
+  outline: none;
+}
+
+/* ── 正在播放卡片高亮（用亮度/透明度，不用外框） ── */
+.music-list2.track-active .music-text2 p:first-child {
+  color: #9fb0e8;
+}
+
+.gallery-wrapper img.track-active,
+.gallery-wrapper2 img.track-active {
+  opacity: 0.82;
+}
+
+.album-card.track-active img {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  opacity: 0.88;
+}
+
+/* 可點擊的 music-list2 hover */
+.music-list2 {
+  transition: background 0.2s;
+  border-radius: 6px;
+}
+
+.music-list2:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ════════════════════════════════
+   RWD — 手機版
+   ════════════════════════════════ */
+@media (max-width: 768px) {
+  body.has-player {
+    padding-bottom: 64px;
+  }
+
+  .global-player {
+    height: 62px;
+    padding: 0 14px;
+    gap: 10px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  /* 手機：隱藏非必要控制 */
+  .gp-progress-area,
+  .gp-volume-wrap,
+  #gpShuffle,
+  #gpLoop,
+  #gpPrev {
+    display: none;
+  }
+
+  .gp-mini-area {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .gp-cover-wrap {
+    width: 42px;
+    height: 42px;
+    max-width: 42px;
+    flex-shrink: 0;
+  }
+
+  .gp-info {
+    min-width: 0;
+    flex: 1 1 0;
+    overflow: hidden;
+  }
+
+  /* ── 手機展開：全螢幕播放器 ── */
+  .global-player.expanded {
+    height: 100dvh;
+    height: 100vh; /* fallback */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 28px;
+    gap: 24px;
+    overflow-y: auto;
+    background: rgba(235, 240, 250, 0.72);
+    backdrop-filter: blur(40px) saturate(1.8);
+    -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  }
+
+  .global-player.expanded .gp-progress-area,
+  .global-player.expanded .gp-volume-wrap,
+  .global-player.expanded #gpShuffle,
+  .global-player.expanded #gpLoop,
+  .global-player.expanded #gpPrev {
+    display: flex;
+  }
+
+  .global-player.expanded .gp-cover-wrap {
+    width: min(220px, 60vw);
+    height: min(220px, 60vw);
+    border-radius: 14px;
+  }
+
+  .global-player.expanded .gp-info {
+    text-align: center;
+    flex: 0 0 auto;
+  }
+
+  .global-player.expanded .gp-title {
+    font-size: 1.4rem;
+  }
+
+  .global-player.expanded .gp-author {
+    font-size: 0.9rem;
+  }
+
+  .global-player.expanded .gp-progress-area {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .global-player.expanded .gp-controls {
+    gap: 12px;
+  }
+
+  .global-player.expanded .gp-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+  }
+
+  .global-player.expanded .gp-playpause {
+    width: 62px !important;
+    height: 62px !important;
+    font-size: 1.5rem !important;
+  }
+
+  .global-player.expanded .gp-volume-wrap {
+    width: 100%;
+  }
+
+  .global-player.expanded #gpVolume {
+    flex: 1;
+    width: auto;
+  }
+}

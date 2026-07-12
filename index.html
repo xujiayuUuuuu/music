@@ -7,6 +7,9 @@
   <title>Music Player</title>
       <!-- 引入 Bootstrap -->
   <link href="css/style.css" rel="stylesheet">
+  <link href="css/player.css" rel="stylesheet">
+  <link href="css/playlist.css" rel="stylesheet">
+  <link href="css/generate.css" rel="stylesheet">
 </head>
 <body>  
    <!-- 1. 先放背景容器 --><div id="particles-js"></div>
@@ -56,39 +59,111 @@ particlesJS("particles-js", {
  
 
 
-<button class="menu-toggle">☰</button>
+<button class="menu-toggle" id="menuToggle" aria-label="選單">
+  <span class="bar"></span>
+  <span class="bar"></span>
+  <span class="bar"></span>
+</button>
+
+<div class="menu-overlay" id="menuOverlay"></div>
 
 <nav class="menu" id="menu">
-  <div class="menu-item" onclick="toggleSubMenu('musicSubmenu')">音樂 </div>
-  <div class="submenu" id="musicSubmenu">
-    <a href="music2.html"><button>羈絆</button></a>
-    <a href="music03.html"><button>獨</button></a>
-    <a href="music4.html"><button>微光</button></a>
+  <div class="menu-header">
+    <span class="menu-logo">Music</span>
+    <button class="menu-close" id="menuClose" aria-label="關閉">✕</button>
   </div>
 
-  <div class="menu-item" onclick="toggleSubMenu('contactSubmenu')">聯絡我們 </div>
-  <div class="submenu" id="contactSubmenu">
-    <a href="index.html"><button>聯絡電話</button></a>
-    <a href="index.html"><button>電子信箱</button></a>
-  
+  <div class="menu-section">
+    <div class="menu-item" onclick="toggleSubMenu('musicSubmenu')">
+      <span class="menu-icon">♪</span>
+      <span>音樂</span>
+      <span class="menu-arrow" id="arrow-musicSubmenu">›</span>
+    </div>
+    <div class="submenu" id="musicSubmenu">
+      <a href="music2.html"><button class="submenu-item">羈絆</button></a>
+      <a href="music03.html"><button class="submenu-item">獨</button></a>
+      <a href="music4.html"><button class="submenu-item">微光</button></a>
+    </div>
   </div>
-</div>
+
+  <div class="menu-section">
+    <a href="#generateSection" id="menuGoGenerate" style="text-decoration:none;">
+      <div class="menu-item">
+        <span class="menu-icon"></span>
+        <span>生成音樂</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-item" id="menuOpenPlaylist">
+      <span class="menu-icon">≡</span>
+      <span>播放清單</span>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-item" onclick="toggleSubMenu('contactSubmenu')">
+      <span class="menu-icon">✉</span>
+      <span>聯絡我們</span>
+      <span class="menu-arrow" id="arrow-contactSubmenu">›</span>
+    </div>
+    <div class="submenu" id="contactSubmenu">
+      <a href="index.html"><div class="submenu-item">聯絡電話</div></a>
+      <a href="index.html"><div class="submenu-item">電子信箱</div></a>
+    </div>
+  </div>
+
+  <div class="menu-footer">
+    <p>© 2025 Music App</p>
+  </div>
 </nav>
 
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const menuClose = document.getElementById('menuClose');
+  const menu = document.getElementById('menu');
+  const overlay = document.getElementById('menuOverlay');
 
- <script>
-    const menuToggle = document.querySelector('.menu-toggle');
-    const menu = document.getElementById('menu');
+  function openMenu() {
+    menu.classList.add('active');
+    overlay.classList.add('active');
+    menuToggle.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 
-    menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('active');
-    });
+  function closeMenu() {
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+    menuToggle.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 
-    function toggleSubMenu(id) {
-      const submenu = document.getElementById(id);
-      submenu.classList.toggle('active');
+  menuToggle.addEventListener('click', openMenu);
+  menuClose.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const openPL = document.getElementById('menuOpenPlaylist');
+    if (openPL) {
+      openPL.addEventListener('click', () => {
+        closeMenu();
+        if (window.PlaylistPanel) PlaylistPanel.openPanel();
+      });
     }
-  </script>
+    const goGen = document.getElementById('menuGoGenerate');
+    if (goGen) {
+      goGen.addEventListener('click', () => closeMenu());
+    }
+  });
+
+  function toggleSubMenu(id) {
+    const submenu = document.getElementById(id);
+    const arrow = document.getElementById('arrow-' + id);
+    submenu.classList.toggle('active');
+    if (arrow) arrow.classList.toggle('rotated');
+  }
+</script>
 
  
 
@@ -130,26 +205,103 @@ particlesJS("particles-js", {
           <blockquote>或許是朋友的嬉鬧聲 獨自一人看海的浪聲 </blockquote>
             <blockquote>不論哪段回憶 都有它獨有的聲音</blockquote>
               <blockquote> 如果聲音記得，你想記得什麼？</blockquote>
-              
-        
-        <audio id="audioPlayer" controls>
-          <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-          Your browser does not support the audio element.
-        </audio>
+
+        <div class="mini-player" id="miniPlayer">
+          <button class="mini-play-btn" id="miniPlayBtn"><span class="play-icon"></span></button>
+          <div class="mini-progress-wrap">
+            <div class="mini-progress-track" id="miniProgressTrack">
+              <div class="mini-progress-fill" id="miniProgressFill"></div>
+            </div>
+          </div>
+          <div class="mini-times">
+            <span id="miniCurTime">0:00</span>
+            <span id="miniDur">—</span>
+          </div>
+        </div>
       </div>
     
 
       <div class="tracklist">
         <h3>Tracks</h3>
-        <ul>
-          <li onclick="playTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
-          1.      羈絆</li>
-          <li onclick="https:///Users/xujiayu/Music/Music/Media.localized/Music/Unknown Artist/Unknown Album/獨 - 2025_3_15 上午1.08.m4a">2.      獨</li>
-          <li onclick="playTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">3.      微光</li>
-          
+        <div class="track-list">
+          <div class="track-item" onclick="playTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
+            <span class="track-num">1</span>
+            <span class="track-name">羈絆</span>
+          </div>
+          <div class="track-item">
+            <span class="track-num">2</span>
+            <span class="track-name">獨</span>
+          </div>
+          <div class="track-item" onclick="playTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
+            <span class="track-num">3</span>
+            <span class="track-name">微光</span>
+          </div>
+        </div>
       </div>
   
     </main>
+
+<!-- ═══ 生成音樂區塊 ═══ -->
+<section class="generate-section" id="generateSection">
+  <div class="generate-header">
+    <h2>用記憶生成音樂</h2>
+    <p>上傳一張照片或一段影片，告訴我們這個瞬間的故事，<br>我們將為你的記憶量身打造一首專屬音樂。</p>
+  </div>
+
+  <div class="generate-card">
+    <div class="gen-upload-zone" id="genUploadZone">
+      <input type="file" id="genFileInput" accept="image/*,video/*">
+      <span class="gen-upload-icon"></span>
+      <span class="gen-upload-label">點擊或拖曳上傳照片／影片</span>
+      <span class="gen-upload-hint">支援 JPG、PNG、MP4、MOV 等格式</span>
+      <img class="gen-preview" id="genPreview" alt="預覽">
+      <video class="gen-preview-video" id="genPreviewVideo" muted playsinline loop autoplay></video>
+      <div class="gen-preview-overlay">點擊更換檔案</div>
+    </div>
+
+    <div class="gen-form">
+      <div>
+        <label class="gen-label" for="genDescription">描述這個記憶</label>
+        <textarea class="gen-textarea" id="genDescription"
+          placeholder="例如：那年夏天我們在海邊，浪聲很大，大家笑得很開心……"></textarea>
+      </div>
+      <div>
+        <label class="gen-label">心情（可複選）</label>
+        <div class="gen-mood-group" id="genMoodGroup"></div>
+      </div>
+      <div>
+        <label class="gen-label">音樂風格</label>
+        <div class="gen-style-group" id="genStyleGroup"></div>
+      </div>
+      <button class="gen-submit-btn" id="genSubmitBtn">生成我的音樂</button>
+    </div>
+
+    <div class="gen-progress-area" id="genProgressArea">
+      <div class="gen-spinner"></div>
+      <div class="gen-progress-text" id="genProgressText">準備中…</div>
+      <div class="gen-progress-bar-wrap">
+        <div class="gen-progress-bar" id="genProgressBar"></div>
+      </div>
+    </div>
+
+    <div class="gen-result" id="genResult">
+      <img class="gen-result-cover" id="genResultCover" alt="封面">
+      <div class="gen-result-info">
+        <div class="gen-result-label">已為你生成</div>
+        <div class="gen-result-title" id="genResultTitle"></div>
+        <div class="gen-result-meta" id="genResultMeta"></div>
+      </div>
+      <div class="gen-result-actions">
+        <button class="gen-result-btn primary" id="genPlayBtn">播放</button>
+        <button class="gen-result-btn" id="genAddPlaylistBtn">清單</button>
+      </div>
+    </div>
+
+    <div class="gen-retry-row" id="genRetryRow">
+      <button class="gen-retry-btn" id="genRetryBtn">重新生成</button>
+    </div>
+  </div>
+</section>
 
     <h2>排行榜 ></h2>
     <div class="scroll-gallery">
@@ -362,21 +514,21 @@ particlesJS("particles-js", {
   <div class="album-stack">
     <div class="album-card"
       data-title="羈絆"
-      data-desc="陪伴、友情與親情交織而成的聲音記憶。"
+      data-desc="陪伴、歡笑、友情與親情，不同交織的情感。是那個下午、熟悉的聲音，清澈且單純的我們。"
       data-link="music2.html">
       <img src="img/photo2.png">
     </div>
 
     <div class="album-card"
       data-title="獨"
-      data-desc="獨自一人時，最清楚聽見的內在聲音。"
+      data-desc="21年，獨自一人時，空，無一物。海聲、雨聲、呼吸，剩下我與世界的獨白。"
       data-link="music03.html">
       <img src="img/photo3.png">
     </div>
 
     <div class="album-card"
       data-title="微光"
-      data-desc="在黑暗中仍然存在的那一點聲音。"
+      data-desc="在黑暗中仍然存在的那一點光與聲音。即使幽微，也足以讓人記得曾經存在過。"
       data-link="music4.html">
       <img src="img/photo4.png">
     </div>
@@ -384,11 +536,18 @@ particlesJS("particles-js", {
   </div>
 </section>
 
+<div class="modal-overlay" id="modalOverlay"></div>
 <div class="album-panel" id="albumPanel">
   <button class="panel-close" id="closePanel">×</button>
-  <h2 id="panelTitle"></h2>
-  <p id="panelDesc"></p>
-  <a id="panelLink">view more →</a>
+  <img class="panel-cover" id="panelCover" src="" alt="">
+  <div class="panel-body">
+    <h2 id="panelTitle"></h2>
+    <p id="panelDesc"></p>
+    <a class="panel-link-btn" id="panelLink" href="#">
+      <span>聆聽完整單曲</span>
+      <span class="panel-arrow">›</span>
+    </a>
+  </div>
 </div>
 
 
@@ -483,26 +642,91 @@ particlesJS("particles-js", {
     });
   });
   const panel = document.getElementById('albumPanel');
-const title = document.getElementById('panelTitle');
-const desc = document.getElementById('panelDesc');
-const link = document.getElementById('panelLink');
+const modalOverlay = document.getElementById('modalOverlay');
+const panelTitle = document.getElementById('panelTitle');
+const panelDesc = document.getElementById('panelDesc');
+const panelLink = document.getElementById('panelLink');
+const panelCover = document.getElementById('panelCover');
 
 document.querySelectorAll('.album-card').forEach(card => {
   card.addEventListener('click', () => {
-    title.textContent = card.dataset.title;
-    desc.textContent = card.dataset.desc;
-    link.href = card.dataset.link;
+    panelTitle.textContent = card.dataset.title;
+    panelDesc.textContent = card.dataset.desc;
+    panelLink.href = card.dataset.link;
+    panelCover.src = card.querySelector('img').src;
+    panelCover.alt = card.dataset.title;
     panel.classList.add('show');
+    modalOverlay.classList.add('show');
   });
 });
 
-document.getElementById('closePanel').addEventListener('click', () => {
+function closeAlbumPanel() {
   panel.classList.remove('show');
-});
+  modalOverlay.classList.remove('show');
+}
+
+document.getElementById('closePanel').addEventListener('click', closeAlbumPanel);
+modalOverlay.addEventListener('click', closeAlbumPanel);
 
   </script>
   
   
+
+<!-- ─── Global Music Player ─── -->
+<div class="global-player" id="globalPlayer" role="region" aria-label="音樂播放器">
+
+  <!-- 封面 + 歌曲資訊（手機點擊展開） -->
+  <div class="gp-mini-area" id="gpMiniArea">
+    <div class="gp-cover-wrap">
+      <img id="gpCover" src="img/photo01.png" alt="封面">
+    </div>
+    <div class="gp-info">
+      <span class="gp-title"  id="gpTitle">如果聲音記得</span>
+      <span class="gp-author" id="gpAuthor">xujiayu</span>
+    </div>
+  </div>
+
+  <!-- 控制鍵 -->
+  <div class="gp-controls">
+    <button class="gp-btn" id="gpShuffle" title="隨機播放">⇄</button>
+    <button class="gp-btn" id="gpPrev" title="上一首">
+      <span class="gp-arrow gp-arrow-prev"></span>
+    </button>
+    <button class="gp-btn gp-playpause" id="gpPlayPause" title="播放／暫停"><span class="play-icon"></span></button>
+    <button class="gp-btn" id="gpNext" title="下一首">
+      <span class="gp-arrow gp-arrow-next"></span>
+    </button>
+    <button class="gp-btn" id="gpLoop"    title="循環播放">↻</button>
+  </div>
+
+  <!-- 進度條 -->
+  <div class="gp-progress-area">
+    <span class="gp-time" id="gpCurrentTime">0:00</span>
+    <div class="gp-progress-track">
+      <div id="gpFill"></div>
+      <input type="range" id="gpProgress" min="0" max="100" value="0" step="0.1" aria-label="播放進度">
+    </div>
+    <span class="gp-time" id="gpDuration">—</span>
+  </div>
+
+  <!-- 音量 -->
+  <div class="gp-volume-wrap">
+    <button class="gp-btn" id="gpMute" title="靜音切換">●</button>
+    <input type="range" id="gpVolume" min="0" max="1" step="0.02" value="0.8" aria-label="音量">
+  </div>
+
+  <!-- 關閉 -->
+  <button class="gp-btn gp-close" id="gpClose" title="關閉播放器">✕</button>
+</div>
+
+<script src="js/tracks.js"></script>
+<script src="js/audioEngine.js"></script>
+<script src="js/services/storageService.js"></script>
+<script src="js/services/playlistService.js"></script>
+<script src="js/player.js"></script>
+<script src="js/playlist.js"></script>
+<script src="js/generate.js"></script>
+
 </body>
 
 </html>
